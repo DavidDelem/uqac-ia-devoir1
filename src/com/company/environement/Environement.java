@@ -1,6 +1,6 @@
 package com.company.environement;
 
-import com.company.utils.Event;
+import com.company.utils.Position;
 
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -9,9 +9,9 @@ import java.util.concurrent.TimeUnit;
 public class Environement extends Thread {
 
     private Piece[][] manoir;
-    private ConcurrentLinkedQueue<Event> queue;
+    private ConcurrentLinkedQueue<Position> queue;
 
-    public Environement(Piece[][] manoir, ConcurrentLinkedQueue<Event> queue) {
+    public Environement(Piece[][] manoir, ConcurrentLinkedQueue<Position> queue) {
         this.manoir = manoir;
         this.queue = queue;
     }
@@ -45,29 +45,37 @@ public class Environement extends Thread {
     }
 
     private Boolean shouldThereBeANewDirtySpace() {
-        Random random = new Random();
-        return random.nextDouble() < 0.7;
+        return new Random().nextDouble() < 0.7;
     }
 
     private Boolean shouldThereBeANewLostJewel() {
-        Random random = new Random();
-        return random.nextDouble() < 0.1;
+        return new Random().nextDouble() < 0.1;
     }
 
     private void generateDirt() {
+
+        /* Détermination du placement de la position de la poussière */
         Random random = new Random();
         int i = random.nextInt(10);
         int j = random.nextInt(10);
+
+        /* Mise à jours du manoir */
         manoir[i][j].setDirt(true);
-        queue.add(new Event("dirt", i, j));
+        /* Evénement pour indiquer à l'interface la piéce à mettre à jour */
+        queue.add(new Position(i, j));
     }
 
     private void generateJewel() {
+
+        /* Détermination du placement de la position des bijoux */
         Random random = new Random();
         int i = random.nextInt(10);
         int j = random.nextInt(10);
+
+        /* Mise à jours du manoir */
         manoir[i][j].setJewel(true);
-        queue.add(new Event("jewels", i, j));
+        /* Evénement pour indiquer à l'interface la piéce à mettre à jour */
+        queue.add(new Position(i, j));
     }
 
 }

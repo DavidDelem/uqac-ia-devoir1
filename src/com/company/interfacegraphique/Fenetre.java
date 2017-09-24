@@ -30,11 +30,6 @@ public class Fenetre extends JFrame {
                 getContentPane().add(imagesPieces[i][j]);
             }
         }
-
-//        updatePiece(5,8, true, false);
-//        updatePiece(8,2, true, true);
-//        updatePiece(1,4, false, true);
-//        updatePositionRobot(8,2);
     }
 
     public void updatePiece(int i, int j, Boolean hasDirt, Boolean hasJewel) {
