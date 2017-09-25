@@ -25,7 +25,7 @@ public class Environement extends Thread {
             if (shouldThereBeANewLostJewel()) generateJewel();
 
             try {
-                TimeUnit.SECONDS.sleep(2);
+                TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

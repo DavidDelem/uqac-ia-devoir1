@@ -35,7 +35,7 @@ public class Agent extends Thread {
 
             try {
                 TimeUnit.SECONDS.sleep(2);
-                capteurs.detecterPoussieres();
+                //capteurs.detecterPoussieres();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
