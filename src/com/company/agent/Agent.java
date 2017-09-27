@@ -15,15 +15,13 @@ public class Agent extends Thread {
     private EtatMental etatMental;
     private Capteurs capteurs;
     private Effecteurs effecteurs;
-    private int i;
-    private int j;
+    private Position position;
     private int nbPoints;
 
     public Agent(Piece[][] manoir, ConcurrentLinkedQueue<Position> queue) {
         this.manoir = manoir;
         this.queue = queue;
-        this.i = 0;
-        this.j = 0;
+        this.position = new Position(0,0);
 
         etatMental = new EtatMental();
         capteurs = new Capteurs(manoir);

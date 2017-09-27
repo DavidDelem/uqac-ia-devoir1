@@ -1,6 +1,7 @@
 package com.company.agent;
 
 import com.company.environement.Piece;
+import com.company.utils.Position;
 
 public class Effecteurs {
 
@@ -20,19 +21,35 @@ public class Effecteurs {
 
     }
 
-    public void deplacementGauche() {
-
+    public Position deplacementGauche(Position position) {
+        Position newPosition = position;
+        if (position.getI()-1 >= 0) {
+            newPosition.setI(position.getI()-1);
+        }
+        return newPosition;
     }
 
-    public void deplacementDroite() {
-
+    public Position deplacementDroite(Position position) {
+        Position newPosition = position;
+        if (position.getI()+1 < 10) {
+            newPosition.setI(position.getI()+1);
+        }
+        return newPosition;
     }
 
-    public void deplacementHaut() {
-
+    public Position deplacementHaut(Position position) {
+        Position newPosition = position;
+        if (position.getJ()-1 >= 0) {
+            newPosition.setJ(position.getJ()-1);
+        }
+        return newPosition;
     }
 
-    public void deplacementBas() {
-
+    public Position deplacementBas(Position position) {
+        Position newPosition = position;
+        if (position.getJ()+1 < 10) {
+            newPosition.setI(position.getJ()+1);
+        }
+        return newPosition;
     }
 }
