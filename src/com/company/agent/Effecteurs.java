@@ -48,7 +48,7 @@ public class Effecteurs {
     public Position deplacementBas(Position position) {
         Position newPosition = position;
         if (position.getJ()+1 < 10) {
-            newPosition.setI(position.getJ()+1);
+            newPosition.setJ(position.getJ()+1);
         }
         return newPosition;
     }

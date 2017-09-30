@@ -5,6 +5,7 @@ import com.company.environement.Environement;
 import com.company.interfacegraphique.InterfaceGraphique;
 import com.company.utils.Position;
 import com.company.utils.SharedDatas;
+import com.company.utils.UpdateInterfaceEvent;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -13,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
 
         SharedDatas sharedDatas = new SharedDatas();
-        ConcurrentLinkedQueue<Position> queue = new ConcurrentLinkedQueue<Position>();
+        ConcurrentLinkedQueue<UpdateInterfaceEvent> queue = new ConcurrentLinkedQueue<>();
 
         /* Thread de l'environement */
         Environement environement = new Environement(sharedDatas.manoir, queue);

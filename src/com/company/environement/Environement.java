@@ -1,6 +1,7 @@
 package com.company.environement;
 
 import com.company.utils.Position;
+import com.company.utils.UpdateInterfaceEvent;
 
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -9,9 +10,9 @@ import java.util.concurrent.TimeUnit;
 public class Environement extends Thread {
 
     private Piece[][] manoir;
-    private ConcurrentLinkedQueue<Position> queue;
+    private ConcurrentLinkedQueue<UpdateInterfaceEvent> queue;
 
-    public Environement(Piece[][] manoir, ConcurrentLinkedQueue<Position> queue) {
+    public Environement(Piece[][] manoir, ConcurrentLinkedQueue<UpdateInterfaceEvent> queue) {
         this.manoir = manoir;
         this.queue = queue;
     }
@@ -62,7 +63,7 @@ public class Environement extends Thread {
         /* Mise à jours du manoir */
         manoir[i][j].setDirt(true);
         /* Evénement pour indiquer à l'interface la piéce à mettre à jour */
-        queue.add(new Position(i, j));
+        queue.add(new UpdateInterfaceEvent(new Position(i, j), "updateContenuPiece"));
     }
 
     private void generateJewel() {
@@ -75,7 +76,7 @@ public class Environement extends Thread {
         /* Mise à jours du manoir */
         manoir[i][j].setJewel(true);
         /* Evénement pour indiquer à l'interface la piéce à mettre à jour */
-        queue.add(new Position(i, j));
+        queue.add(new UpdateInterfaceEvent(new Position(i, j), "updateContenuPiece"));
     }
 
 }

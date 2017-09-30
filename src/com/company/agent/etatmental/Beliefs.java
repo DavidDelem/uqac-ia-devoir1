@@ -15,6 +15,14 @@ public class Beliefs {
         this.positionsJewelsList = new ArrayList<>();
     }
 
+    public boolean thereIsDirt() {
+        return !positionsDirtsList.isEmpty();
+    }
+
+    public boolean thereIsJewels() {
+        return !positionsJewelsList.isEmpty();
+    }
+
     public List<Position> getpositionsDirtsList() {
         return positionsDirtsList;
     }

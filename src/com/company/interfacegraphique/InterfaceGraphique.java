@@ -2,6 +2,7 @@ package com.company.interfacegraphique;
 
 import com.company.environement.Piece;
 import com.company.utils.Position;
+import com.company.utils.UpdateInterfaceEvent;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -9,22 +10,34 @@ public class InterfaceGraphique extends Thread {
 
     private Piece[][] manoir;
     private Fenetre fenetre;
-    private ConcurrentLinkedQueue<Position> queue;
+    private ConcurrentLinkedQueue<UpdateInterfaceEvent> queue;
 
-    public InterfaceGraphique(Piece[][] manoir, ConcurrentLinkedQueue<Position> queue) {
+    public InterfaceGraphique(Piece[][] manoir, ConcurrentLinkedQueue<UpdateInterfaceEvent> queue) {
         this.manoir = manoir;
         this.queue = queue;
         fenetre = new Fenetre();
     }
 
     public void run() {
-        Position position;
+        UpdateInterfaceEvent updateInterfaceEvent;
+        int i, j;
 
         while(true) {
-            if((position = queue.poll()) != null) {
-                int i = position.getI();
-                int j = position.getJ();
-                fenetre.updatePiece(i, j, manoir[i][j].getDirt(), manoir[i][j].getJewel());
+            if((updateInterfaceEvent = queue.poll()) != null) {
+
+                i = updateInterfaceEvent.getPosition().getI();
+                j = updateInterfaceEvent.getPosition().getJ();
+
+                switch (updateInterfaceEvent.getTypeEvent()) {
+                    case "updateContenuPiece":
+                        fenetre.updatePiece(i, j, manoir[i][j].getDirt(), manoir[i][j].getJewel());
+                        break;
+                    case "updatePositionRobot":
+                        fenetre.updatePositionRobot(i, j);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
