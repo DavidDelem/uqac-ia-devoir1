@@ -6,8 +6,8 @@ public class Position {
     private int j;
 
     public Position(int i, int j) {
-        this.i = i;
-        this.j = j;
+        this.i = i; // Rows
+        this.j = j; // Columns
     }
 
     public int getI() {
