@@ -13,12 +13,12 @@ public class Effecteurs {
 
     //  execute l'action
 
-    public void cleanDirt() {
-
+    public void cleanDirt(Position position) {
+        manoir[position.getI()][position.getJ()].setDirt(true);
     }
 
-    public void collectJewels() {
-
+    public void collectJewels(Position position) {
+        manoir[position.getI()][position.getJ()].setJewel(false);
     }
 
     public Position deplacementGauche(Position position) {

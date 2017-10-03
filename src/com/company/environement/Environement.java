@@ -11,6 +11,7 @@ public class Environement extends Thread {
 
     private Piece[][] manoir;
     private ConcurrentLinkedQueue<UpdateInterfaceEvent> queue;
+    private String nbPiecesNettoyees;
 
     public Environement(Piece[][] manoir, ConcurrentLinkedQueue<UpdateInterfaceEvent> queue) {
         this.manoir = manoir;
