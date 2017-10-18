@@ -25,7 +25,9 @@ public class Capteurs {
         /* Ajout des nouvelles positions des poussières */
         for (int i=0; i<10; i++) {
             for(int j=0; j<10; j++) {
-                if(manoir[i][j].getDirt()) this.positionsDirtsList.add(new Position(i,j));
+                if(manoir[i][j] != null && manoir[i][j].getDirt()) {
+                    this.positionsDirtsList.add(new Position(i,j));
+                }
             }
         }
     }
@@ -37,7 +39,9 @@ public class Capteurs {
         /* Ajout des nouvelles positions des bijoux */
         for (int i=0; i<10; i++) {
             for(int j=0; j<10; j++) {
-                if(manoir[i][j].getDirt()) this.positionsJewelsList.add(new Position(i,j));
+                if(manoir[i][j] != null && manoir[i][j].getJewel()) {
+                    this.positionsJewelsList.add(new Position(i,j));
+                }
             }
         }
     }
