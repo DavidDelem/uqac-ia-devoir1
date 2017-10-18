@@ -1,6 +1,8 @@
 package com.company.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.Math.abs;
@@ -13,11 +15,20 @@ public class AStarPathFinder {
     Map<Position, Node> openList;
     Map<Position, Node> closedList;
 
-    public ArrayList<Position> AStarPathFinder (Position startPos, Position targetPos) {
-        target = targetPos;
-        //start.parent.setI(0);
-        //start.parent.setJ(0);
+    public List<Position> AStarPathFinder(Position startPos, Position targetPos) {
+        openList = new HashMap<>();
+        closedList = new HashMap<>();
+
         Position current = new Position(startPos.getI(),startPos.getJ());
+        target = targetPos;
+
+        start = new Node();
+        Position startParent = new Position(0,0);
+        start.setgCost(0);
+        start.sethCost(manhattanDistance(targetPos.getI(),targetPos.getJ(),startPos.getI(),startPos.getJ()));
+        start.setfCost(start.getgCost()+start.gethCost());
+        start.setParent(startParent);
+
 
         openList.put(current,start);
         addToClosedList(current);
@@ -41,11 +52,7 @@ public class AStarPathFinder {
 
     private void addToClosedList(Position pos){
         Node node = openList.get(pos);
-        closedList.get(pos).gCost=node.gCost;
-        closedList.get(pos).hCost=node.hCost;
-        closedList.get(pos).fCost=node.fCost;
-        closedList.get(pos).parent=node.parent;
-
+        closedList.put(pos,node);
         openList.remove(pos);
     }
 
@@ -53,7 +60,7 @@ public class AStarPathFinder {
         Node tmp = new Node();
         for (int j=current.getJ()-1;j<=current.getJ()+1;j++) {
             if (j<0 || j>10) { continue; } // Outside map = forget
-            for (int i=current.getI()-1;i<=current.getI()+1;j++) {
+            for (int i=current.getI()-1;i<=current.getI()+1;i++) {
                 if (i<0 || i>10) { continue; } // Outside map = forget
                 if (j==current.getJ() && i==current.getI()) { continue; } // Current node = forget
                 // Diagonal cases = forget
@@ -64,25 +71,19 @@ public class AStarPathFinder {
 
                 Position adjacentPos = new Position(i,j);
                 if (!alreadyInList(adjacentPos,closedList)) {
-                    tmp.gCost = closedList.get(current).gCost + manhattanDistance(j,i,current.getJ(),current.getI());
-                    tmp.hCost = manhattanDistance(j,i,target.getJ(),target.getI());
-                    tmp.fCost = tmp.gCost + tmp.hCost;
-                    tmp.parent = current;
+                    tmp.setgCost(closedList.get(current).getgCost() + manhattanDistance(i,j,current.getI(),current.getJ()));
+                    tmp.sethCost(manhattanDistance(i,j,target.getI(),target.getJ()));
+                    tmp.setfCost(tmp.getgCost()+tmp.gethCost());
+                    tmp.setParent(current);
 
                     if (alreadyInList(adjacentPos, openList)){
                         /* already in open list, compare costs */
-                        if (tmp.fCost < openList.get(adjacentPos).fCost){
-                            openList.get(adjacentPos).gCost=tmp.gCost;
-                            openList.get(adjacentPos).hCost=tmp.hCost;
-                            openList.get(adjacentPos).fCost=tmp.fCost;
-                            openList.get(adjacentPos).parent=tmp.parent;
+                        if (tmp.getfCost() < openList.get(adjacentPos).getfCost()){
+                            openList.put(adjacentPos,tmp);
                         }
                     } else {
                         /* not in open list, add to it */
-                        openList.get(adjacentPos).gCost=tmp.gCost;
-                        openList.get(adjacentPos).hCost=tmp.hCost;
-                        openList.get(adjacentPos).fCost=tmp.fCost;
-                        openList.get(adjacentPos).parent=tmp.parent;
+                        openList.put(adjacentPos,tmp);
                     }
                 }
             }

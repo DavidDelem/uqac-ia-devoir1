@@ -8,7 +8,7 @@ import static java.lang.Math.abs;
 
 public class Node {
     int gCost; // Cost from start position to considered node
-    int hCost; // Cost considered node to target position
+    int hCost; // Cost from considered node to target position
     int fCost; // Sum of gCost and hCost
     Position parent; // Parent node
 
