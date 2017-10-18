@@ -9,20 +9,18 @@ import static java.lang.Math.abs;
 
 public class AStarPathFinder {
 
-    Node start;
-    Position target;
-    ArrayList<Position> path;
+    List<Position> path;
     Map<Position, Node> openList;
     Map<Position, Node> closedList;
 
     public List<Position> AStarPathFinder(Position startPos, Position targetPos) {
         openList = new HashMap<>();
         closedList = new HashMap<>();
+        path = new ArrayList<>();
 
         Position current = new Position(startPos.getI(),startPos.getJ());
-        target = targetPos;
 
-        start = new Node();
+        Node start = new Node();
         Position startParent = new Position(0,0);
         start.setgCost(0);
         start.sethCost(manhattanDistance(targetPos.getI(),targetPos.getJ(),startPos.getI(),startPos.getJ()));
@@ -32,18 +30,18 @@ public class AStarPathFinder {
 
         openList.put(current,start);
         addToClosedList(current);
-        addAdjacentNode(current);
+        addAdjacentNode(current,targetPos);
 
-        while(!((current.getI() == target.getI()) && (current.getJ() == target.getJ())) && (!openList.isEmpty())) {
+        while(!((current.getI() == targetPos.getI()) && (current.getJ() == targetPos.getJ())) && (!openList.isEmpty())) {
             // on cherche le meilleur noeud de la liste ouverte, on sait qu'elle n'est pas vide donc il existe
             current = bestNode(openList);
 
             addToClosedList(current);
-            addAdjacentNode(current);
+            addAdjacentNode(current,targetPos);
         }
 
-        if ((current.getI() == target.getI()) && (current.getJ() == target.getJ())){
-            findPath();
+        if ((current.getI() == targetPos.getI()) && (current.getJ() == targetPos.getJ())){
+            findPath(start,targetPos);
         }else{
             /* pas de solution */
         }
@@ -56,7 +54,7 @@ public class AStarPathFinder {
         openList.remove(pos);
     }
 
-    private void addAdjacentNode(Position current) {
+    private void addAdjacentNode(Position current, Position targetPos) {
         Node tmp = new Node();
         for (int j=current.getJ()-1;j<=current.getJ()+1;j++) {
             if (j<0 || j>10) { continue; } // Outside map = forget
@@ -72,7 +70,7 @@ public class AStarPathFinder {
                 Position adjacentPos = new Position(i,j);
                 if (!alreadyInList(adjacentPos,closedList)) {
                     tmp.setgCost(closedList.get(current).getgCost() + manhattanDistance(i,j,current.getI(),current.getJ()));
-                    tmp.sethCost(manhattanDistance(i,j,target.getI(),target.getJ()));
+                    tmp.sethCost(manhattanDistance(i,j,targetPos.getI(),targetPos.getJ()));
                     tmp.setfCost(tmp.getgCost()+tmp.gethCost());
                     tmp.setParent(current);
 
@@ -106,14 +104,14 @@ public class AStarPathFinder {
     }
 
     private Position bestNode(Map<Position, Node> list){
-        int bestFCost = list.get(list.keySet().toArray()[0]).fCost;
+        int bestFCost = list.get(list.keySet().toArray()[0]).getfCost();
         Position bestNode = new Position(list.keySet().iterator().next().getI(),list.keySet().iterator().next().getJ());
 
         for(Map.Entry<Position, Node> entry : list.entrySet()) {
             Position key = entry.getKey();
             Node value = entry.getValue();
-            if (value.fCost < bestFCost) {
-                bestFCost = value.fCost;
+            if (value.getfCost() < bestFCost) {
+                bestFCost = value.getfCost();
                 bestNode = key;
             }
         }
@@ -121,22 +119,22 @@ public class AStarPathFinder {
         return bestNode;
     }
 
-    private void findPath() {
+    private void findPath(Node start, Position targetPos) {
         /* l'arrivée est le dernier élément de la liste fermée */
-        Node tmp = closedList.get(target);
+        Node tmp = closedList.get(targetPos);
 
-        Position n = new Position(target.getI(),target.getJ());
-        Position prec = new Position(tmp.parent.getI(),tmp.parent.getJ());
+        Position n = new Position(targetPos.getI(),targetPos.getJ());
+        Position prec = new Position(tmp.getParent().getI(),tmp.getParent().getJ());
         path.add(n);
 
-        while (prec != new Position(start.parent.getI(),start.parent.getJ())){
+        while (prec != new Position(start.getParent().getI(),start.getParent().getJ())){
             n.setI(prec.getI());
             n.setJ(prec.getJ());
             path.add(n);
 
-            tmp = closedList.get(tmp.parent);
-            prec.setI(tmp.parent.getI());
-            prec.setJ(tmp.parent.getJ());
+            tmp = closedList.get(tmp.getParent());
+            prec.setI(tmp.getParent().getI());
+            prec.setJ(tmp.getParent().getJ());
         }
     }
 }
