@@ -1,16 +1,15 @@
 package com.company.utils;
 
-import javafx.util.Pair;
-
-import java.util.ArrayList;
-
-import static java.lang.Math.abs;
-
 public class Node {
+    Position position; // Node position
     int gCost; // Cost from start position to considered node
     int hCost; // Cost from considered node to target position
     int fCost; // Sum of gCost and hCost
-    Position parent; // Parent node
+    Node parent; // Parent node
+
+    public Position getPosition() { return position; }
+
+    public void setPosition(Position position) { this.position = position; }
 
     public int getgCost() {
         return gCost;
@@ -32,7 +31,8 @@ public class Node {
         this.fCost = fCost;
     }
 
-    public Position getParent() { return parent; }
+    public Node getParent() { return parent; }
 
-    public void setParent(Position parent) { this.parent = parent; }
+    public void setParent(Node parent) { this.parent = parent; }
+
 }

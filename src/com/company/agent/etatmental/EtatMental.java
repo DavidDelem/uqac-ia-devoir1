@@ -1,5 +1,6 @@
 package com.company.agent.etatmental;
 
+import com.company.utils.Node;
 import com.company.utils.Position;
 
 import java.util.ArrayList;
@@ -22,8 +23,6 @@ public class EtatMental {
         this.beliefs.setpositionsDirtsList(positionsDirt);
         this.beliefs.setpositionsJewelsListList(positionJewels);
     }
-
-    /* Mise à jours des intentions à partir des croyances et des désirs */
 
     public void updateMyIntentions(Position position) {
         /* Si les désirs sont atteins, l'intention est de ne rien faire, on renvoi une liste vide */

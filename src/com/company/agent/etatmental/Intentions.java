@@ -1,6 +1,7 @@
 package com.company.agent.etatmental;
 
 import com.company.utils.Action;
+import com.company.utils.Node;
 import com.company.utils.Position;
 import com.company.utils.AStarPathFinder;
 
@@ -12,7 +13,7 @@ import static java.lang.Math.abs;
 public class Intentions {
 
     private AStarPathFinder aStarPathFinder;
-    private List<Position> path;
+    private List<Node> path;
     private List<Action> actionsList;
 
     public Intentions() {
@@ -29,7 +30,7 @@ public class Intentions {
         int bestManhattanDistance = 100;
         Position targetPos = new Position(0,0);
         for (Position positionElem : positionsList) {
-            int newManhattanDistance = manhattanDistance(position.getJ(), position.getI(), positionElem.getJ(), positionElem.getI());
+            int newManhattanDistance = aStarPathFinder.manhattanDistance(position.getJ(), position.getI(), positionElem.getJ(), positionElem.getI());
             if(newManhattanDistance < bestManhattanDistance) {
                 bestManhattanDistance = newManhattanDistance;
                 targetPos = positionElem;
@@ -40,9 +41,5 @@ public class Intentions {
 
     public List<Action> getActionsList() {
         return actionsList;
-    }
-
-    private int manhattanDistance(int x1, int y1, int x2, int y2){
-        return abs(x2 - x1) + abs(y2 - y1);
     }
 }
