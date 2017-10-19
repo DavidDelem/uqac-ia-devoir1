@@ -49,9 +49,15 @@ public class AStarPathFinder {
     }
 
     private void addToClosedList(Position pos){
-        Node node = openList.get(pos);
-        closedList.put(pos,node);
-        openList.remove(pos);
+        for(Map.Entry<Position, Node> entry : openList.entrySet()) {
+            Position key = entry.getKey();
+            Node value = entry.getValue();
+            if (key.getI()==pos.getI() && key.getJ()==pos.getJ()) {
+                closedList.put(pos,value);
+                openList.remove(pos);
+                break;
+            }
+        }
     }
 
     private void addAdjacentNode(Position current, Position targetPos) {
@@ -69,16 +75,22 @@ public class AStarPathFinder {
 
                 Position adjacentPos = new Position(i,j);
                 if (!alreadyInList(adjacentPos,closedList)) {
-                    tmp.setgCost(closedList.get(current).getgCost() + manhattanDistance(i,j,current.getI(),current.getJ()));
-                    tmp.sethCost(manhattanDistance(i,j,targetPos.getI(),targetPos.getJ()));
+                    tmp.setgCost(closedList.get(current).getgCost() + manhattanDistance(current.getJ(),current.getJ(),j,i));
+                    tmp.sethCost(manhattanDistance(j,i,targetPos.getJ(),targetPos.getI()));
                     tmp.setfCost(tmp.getgCost()+tmp.gethCost());
                     tmp.setParent(current);
 
                     if (alreadyInList(adjacentPos, openList)){
                         /* already in open list, compare costs */
-                        if (tmp.getfCost() < openList.get(adjacentPos).getfCost()){
-                            openList.put(adjacentPos,tmp);
+                        for(Map.Entry<Position, Node> entry : openList.entrySet()) {
+                            Position key = entry.getKey();
+                            Node value = entry.getValue();
+                            if (tmp.getfCost() < value.getfCost()){
+                                openList.put(adjacentPos,tmp);
+                                break;
+                            }
                         }
+
                     } else {
                         /* not in open list, add to it */
                         openList.put(adjacentPos,tmp);
@@ -95,12 +107,13 @@ public class AStarPathFinder {
 
     // Test if node is already in a list
     private boolean alreadyInList(Position pos, Map<Position, Node> list){
-        boolean found = false;
         for(Map.Entry<Position, Node> entry : list.entrySet()) {
             Position key = entry.getKey();
-            if (key == pos) { found = true; }
+            if (key.getI()==pos.getI() && key.getJ()==pos.getJ()) {
+                return true;
+            }
         }
-        return found;
+        return false;
     }
 
     private Position bestNode(Map<Position, Node> list){

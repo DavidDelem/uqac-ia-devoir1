@@ -17,9 +17,7 @@ public class Intentions {
     public List<Position> findPaths(Position position, List<Position> dirtsList) {
         Position targetPos = dirtsList.get(0);
         path = aStarPathFinder.AStarPathFinder(position,targetPos);
-        for (int i=0;i<path.size();i++) {
-            System.out.println();
-        }
+        System.out.println("lol");
         return path;
     }
 }
