@@ -1,9 +1,6 @@
 package com.company.agent.etatmental;
 
-import com.company.utils.Node;
 import com.company.utils.Position;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class EtatMental {
@@ -14,6 +11,7 @@ public class EtatMental {
 
     public EtatMental() {
         this.beliefs = new Beliefs();
+        this.desires = new Desires();
         this.intentions = new Intentions();
     }
 

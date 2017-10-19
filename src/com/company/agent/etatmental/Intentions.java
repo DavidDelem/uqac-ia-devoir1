@@ -8,8 +8,6 @@ import com.company.utils.AStarPathFinder;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.abs;
-
 public class Intentions {
 
     private AStarPathFinder aStarPathFinder;
@@ -37,6 +35,37 @@ public class Intentions {
             }
         }
         this.path = aStarPathFinder.AStarPathFinder(position,targetPos);
+        this.defineActions(dirtsList,jewelsList);
+    }
+
+    private void defineActions(List<Position> dirtsList, List<Position> jewelsList) {
+        for (int i=0;i<path.size()-1;i++) {
+            int abscissa = path.get(i+1).getPosition().getJ()-path.get(i).getPosition().getJ();
+            int ordinate = path.get(i+1).getPosition().getI()-path.get(i).getPosition().getI();
+
+            if (abscissa < 0) actionsList.add(Action.GAUCHE);
+            else if (abscissa > 0) actionsList.add(Action.DROITE);
+
+            if (ordinate < 0) actionsList.add(Action.HAUT);
+            else if (ordinate > 0) actionsList.add(Action.BAS);
+
+            if (i+1 == path.size()-1) {
+                if (containsPosition(path.get(i+1).getPosition(),dirtsList) && !containsPosition(path.get(i+1).getPosition(),jewelsList)) {
+                    actionsList.add(Action.NETTOYER);
+                } else if (containsPosition(path.get(i+1).getPosition(),jewelsList) && !containsPosition(path.get(i+1).getPosition(),dirtsList)) {
+                    actionsList.add(Action.RAMASSER);
+                } else if (containsPosition(path.get(i+1).getPosition(),dirtsList) && containsPosition(path.get(i+1).getPosition(),jewelsList)) {
+                    actionsList.add(Action.NETTOYERETRAMASSER);
+                }
+            }
+        }
+    }
+
+    private boolean containsPosition(Position position,List<Position> list) {
+        for (Position index : list) {
+            if (position.getJ()==index.getJ() && position.getI()==index.getI()) { return true; }
+        }
+        return false;
     }
 
     public List<Action> getActionsList() {

@@ -58,8 +58,8 @@ public class AStarPathFinder {
 
                     if (alreadyInList(tmp, openList)){
                         /* already in open list, compare costs */
-                        for (int k=0;k<openList.size();k++) {
-                            if (tmp.getfCost()<openList.get(k).getfCost()) { openList.add(tmp);break; }
+                        for (Node node : openList) {
+                            if (tmp.getfCost()<node.getfCost()) openList.add(tmp);break;
                         }
                     } else {
                         /* not in open list, add to it */
@@ -77,20 +77,18 @@ public class AStarPathFinder {
 
     // Test if node is already in a list
     private boolean alreadyInList(Node node, List<Node> list){
-        for (int i=0;i<list.size();i++) {
-            if (node.getPosition().getI()==list.get(i).getPosition().getI() && node.getPosition().getJ()==list.get(i).getPosition().getJ()) {
-                return true;
-            }
+        for (Node index : list) {
+            if (node.getPosition().getI()==index.getPosition().getI() && node.getPosition().getJ()==index.getPosition().getJ()) return true;
         }
         return false;
     }
 
     private Node bestNode(List<Node> list){
         Node bestNode = list.get(0);
-        for (int i=0;i<list.size();i++) {
-            if (list.get(i).getfCost() < bestNode.getfCost()) { bestNode = list.get(i); }
-            if (list.get(i).getfCost() == bestNode.getfCost()) {
-                if (list.get(i).gethCost() < bestNode.gethCost()) { bestNode=list.get(i); }
+        for (Node node : list) {
+            if (node.getfCost() < bestNode.getfCost()) bestNode=node;
+            if (node.getfCost() == bestNode.getfCost()) {
+                if (node.gethCost() < bestNode.gethCost()) bestNode=node;
             }
         }
         return bestNode;

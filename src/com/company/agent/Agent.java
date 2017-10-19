@@ -3,7 +3,6 @@ package com.company.agent;
 import com.company.agent.etatmental.EtatMental;
 import com.company.utils.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
@@ -81,6 +80,7 @@ public class Agent extends Thread {
 
         UpdateNbPointsEvent updateNbPointsEvent;
         List<Action> actionList = etatMental.getIntentions().getActionsList();
+
 
         /* Réalisation des actions */
         for(Action action: actionList) {
