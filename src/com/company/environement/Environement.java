@@ -24,8 +24,12 @@ public class Environement extends Thread {
         initializeManoir();
 
         while (gameIsRunning()) {
-            if (shouldThereBeANewDirtySpace()) generateDirt();
-            if (shouldThereBeANewLostJewel()) generateJewel();
+            if (shouldThereBeANewDirtySpace()) {
+                generateDirt();
+            }
+            if (shouldThereBeANewLostJewel()) {
+                generateJewel();
+            }
 
             updateMesurePerformance();
 
@@ -50,11 +54,11 @@ public class Environement extends Thread {
     }
 
     private Boolean shouldThereBeANewDirtySpace() {
-        return new Random().nextDouble() < 0.7;
+        return new Random().nextDouble() < 0.01;
     }
 
     private Boolean shouldThereBeANewLostJewel() {
-        return new Random().nextDouble() < 0.1;
+        return new Random().nextDouble() < 0.9;
     }
 
     private void generateDirt() {

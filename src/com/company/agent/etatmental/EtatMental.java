@@ -22,6 +22,8 @@ public class EtatMental {
         this.beliefs.setpositionsJewelsListList(positionJewels);
     }
 
+    /* Mise à jours des intentions à partir des croyances et des désirs */
+
     public void updateMyIntentions(Position position) {
         /* Si les désirs sont atteins, l'intention est de ne rien faire, on renvoi une liste vide */
         /* Si les désirs ne sont pas atteins, on détermine les actions pour les atteindre */

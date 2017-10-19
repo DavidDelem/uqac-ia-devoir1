@@ -22,10 +22,11 @@ public class Intentions {
 
     public void findPaths(Position position, List<Position> dirtsList, List<Position> jewelsList) {
 
+        actionsList.clear();
         List<Position> positionsList = dirtsList;
         positionsList.addAll(jewelsList);
 
-        int bestManhattanDistance = 100;
+        int bestManhattanDistance = 1000;
         Position targetPos = new Position(0,0);
         for (Position positionElem : positionsList) {
             int newManhattanDistance = aStarPathFinder.manhattanDistance(position.getJ(), position.getI(), positionElem.getJ(), positionElem.getI());

@@ -22,29 +22,34 @@ public class Effecteurs {
     /* Réalisation de l'action demandée */
 
     public Position doAnAction(Action action, Position position) {
+
+        Position nouvellePosition = position;
+
         switch (action) {
             case BAS:
-                position = deplacementBas(position);
+                nouvellePosition = deplacementBas(position);
                 break;
             case HAUT:
-                position = deplacementHaut(position);
+                nouvellePosition = deplacementHaut(position);
                 break;
             case DROITE:
-                position = deplacementDroite(position);
+                nouvellePosition = deplacementDroite(position);
                 break;
             case GAUCHE:
-                position = deplacementGauche(position);
+                nouvellePosition = deplacementGauche(position);
                 break;
             case NETTOYER:
                 cleanDirt(position);
+                System.out.println("Je nettoie");
                 break;
             case RAMASSER:
                 collectJewels(position);
+                System.out.println("Je ranasse");
                 break;
             default:
                 break;
         }
-        return position;
+        return nouvellePosition;
     }
 
     /* Nettoyage de la poussière  */
@@ -74,7 +79,7 @@ public class Effecteurs {
     public Position deplacementGauche(Position position) {
         Position newPosition = position;
         if (position.getJ()-1 >= 0) {
-            newPosition.setI(position.getJ()-1);
+            newPosition.setJ(position.getJ()-1);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(-1));
         }
         return newPosition;
@@ -85,7 +90,7 @@ public class Effecteurs {
     public Position deplacementDroite(Position position) {
         Position newPosition = position;
         if (position.getJ()+1 < 10) {
-            newPosition.setI(position.getJ()+1);
+            newPosition.setJ(position.getJ()+1);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(-1));
         }
         return newPosition;
@@ -95,8 +100,8 @@ public class Effecteurs {
 
     public Position deplacementHaut(Position position) {
         Position newPosition = position;
-        if (position.getI()-1 >= 0) {
-            newPosition.setJ(position.getI()-1);
+        if (position.getJ()-1 >= 0) {
+            newPosition.setI(position.getI()-1);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(-1));
         }
         return newPosition;
@@ -107,7 +112,7 @@ public class Effecteurs {
     public Position deplacementBas(Position position) {
         Position newPosition = position;
         if (position.getI()+1 < 10) {
-            newPosition.setJ(position.getI()+1);
+            newPosition.setI(position.getI()+1);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(-1));
         }
         return newPosition;

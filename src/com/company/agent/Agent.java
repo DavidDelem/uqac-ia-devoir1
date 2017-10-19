@@ -1,5 +1,7 @@
 package com.company.agent;
 
+import com.company.agent.apprentissage.FrequencesExploration;
+import com.company.agent.apprentissage.ModuleApprentissage;
 import com.company.agent.etatmental.EtatMental;
 import com.company.utils.*;
 
@@ -15,6 +17,8 @@ public class Agent extends Thread {
     private EtatMental etatMental;
     private Capteurs capteurs;
     private Effecteurs effecteurs;
+    private ModuleApprentissage moduleApprentissage;
+
     private Position position;
     private int nbPoints;
 
@@ -23,29 +27,36 @@ public class Agent extends Thread {
         this.updateNbPointsQueue = sharedDatas.updateNbPointsQueue;
         this.position = new Position(0,0);
 
-        etatMental = new EtatMental();
-        capteurs = new Capteurs(sharedDatas);
-        effecteurs = new Effecteurs(sharedDatas);
+        this.etatMental = new EtatMental();
+        this.capteurs = new Capteurs(sharedDatas);
+        this.effecteurs = new Effecteurs(sharedDatas);
+        this.moduleApprentissage = new ModuleApprentissage();
     }
 
     public void run() {
 
-//        try {
-//            TimeUnit.SECONDS.sleep(2);
-//            //capteurs.detecterPoussieres();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
         while(amIAlive()){
             observeEnvironmentWithAllMySensors();
             updateMyState();
-            if (etatMental.getBeliefs().getpositionsDirtsList() != null) {
-                if (!etatMental.getBeliefs().getpositionsDirtsList().isEmpty()) {
+            if (etatMental.getBeliefs().getpositionsDirtsList() != null || etatMental.getBeliefs().getpositionsJewelsList() != null) {
+                if (!etatMental.getBeliefs().getpositionsDirtsList().isEmpty() || !etatMental.getBeliefs().getpositionsJewelsList().isEmpty()) {
                     chooseAnAction();
                 }
             }
-            justDoIt(); // effecteur
+            justDoIt();
+
+            /* Apprentissage */
+
+//            moduleApprentissage.incrementeNbIterationTotales();
+//
+//            if(moduleApprentissage.getNbIterationsMax() == moduleApprentissage.getnbIterationsTotales()) {
+//                /* Enregistrement du nombre de points obtenus avec cette fréquence d'exploration */
+//                moduleApprentissage.updatePerformance(moduleApprentissage.getFrequenceExplorationCourante(), nbPoints);
+//                /* Détermination de la nouvelle fréquence d'exploration à utiliser (possiblement la même) */
+//                moduleApprentissage.setFrequenceExploration(FrequencesExploration.MOITIE);
+//                /* Réinitialisation du nombre d'itérations */
+//                moduleApprentissage.setNbIterationsTotales(0);
+//            }
         }
     }
 
@@ -76,16 +87,17 @@ public class Agent extends Thread {
 
     private void justDoIt() {
 
-        int n = 5;
+        FrequencesExploration frequencesExploration = moduleApprentissage.getFrequenceExplorationCourante();
 
         UpdateNbPointsEvent updateNbPointsEvent;
         List<Action> actionList = etatMental.getIntentions().getActionsList();
+        actionList = moduleApprentissage.decideWhereToStopActions(actionList);
 
 
         /* Réalisation des actions */
         for(Action action: actionList) {
             try {
-                TimeUnit.MILLISECONDS.sleep(250);
+                TimeUnit.MILLISECONDS.sleep(150);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
