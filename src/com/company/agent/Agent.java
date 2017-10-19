@@ -38,12 +38,14 @@ public class Agent extends Thread {
         while(amIAlive()){
             observeEnvironmentWithAllMySensors();
             updateMyState();
+
             if (etatMental.getBeliefs().getpositionsDirtsList() != null || etatMental.getBeliefs().getpositionsJewelsList() != null) {
                 if (!etatMental.getBeliefs().getpositionsDirtsList().isEmpty() || !etatMental.getBeliefs().getpositionsJewelsList().isEmpty()) {
                     chooseAnAction();
+                    justDoIt();
                 }
             }
-            justDoIt();
+
 
             /* Apprentissage */
 
@@ -101,6 +103,7 @@ public class Agent extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             position = effecteurs.doAnAction(action, position);
 
             if((updateNbPointsEvent = updateNbPointsQueue.poll()) != null) {

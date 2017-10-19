@@ -59,9 +59,11 @@ public class Effecteurs {
     /* Nettoyage de la poussière  */
 
     public void cleanDirt(Position position) {
+        System.out.println(position.getI());
+
         if(manoir[position.getI()][position.getJ()].getDirt()) {
             manoir[position.getI()][position.getJ()].setDirt(false);
-            updateNbPointsQueue.add(new UpdateNbPointsEvent(10));
+            updateNbPointsQueue.add(new UpdateNbPointsEvent(5));
         }
         if(manoir[position.getI()][position.getJ()].getJewel()) {
             manoir[position.getI()][position.getJ()].setJewel(false);
@@ -74,7 +76,7 @@ public class Effecteurs {
     public void collectJewels(Position position) {
         if(manoir[position.getI()][position.getJ()].getJewel()) {
             manoir[position.getI()][position.getJ()].setJewel(false);
-            updateNbPointsQueue.add(new UpdateNbPointsEvent(20));
+            updateNbPointsQueue.add(new UpdateNbPointsEvent(10));
         }
     }
 
@@ -83,11 +85,11 @@ public class Effecteurs {
     public void cleanDirtAndCollectJewels(Position position) {
         if(manoir[position.getI()][position.getJ()].getDirt()) {
             manoir[position.getI()][position.getJ()].setDirt(false);
-            updateNbPointsQueue.add(new UpdateNbPointsEvent(10));
+            updateNbPointsQueue.add(new UpdateNbPointsEvent(5));
         }
         if(manoir[position.getI()][position.getJ()].getJewel()) {
             manoir[position.getI()][position.getJ()].setJewel(false);
-            updateNbPointsQueue.add(new UpdateNbPointsEvent(+20));
+            updateNbPointsQueue.add(new UpdateNbPointsEvent(10));
         }
     }
 
