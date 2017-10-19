@@ -1,4 +1,7 @@
-package com.company.utils;
+package com.company.agent.exploration;
+
+import com.company.utils.Node;
+import com.company.utils.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +10,8 @@ import static java.lang.Math.abs;
 
 public class AStarPathFinder {
 
-    List<Node> openList;
-    List<Node> closedList;
+    private List<Node> openList;
+    private List<Node> closedList;
 
     public List<Node> AStarPathFinder(Position startPos, Position targetPos) {
         openList = new ArrayList<>();

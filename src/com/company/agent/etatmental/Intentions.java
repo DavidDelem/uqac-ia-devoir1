@@ -3,7 +3,7 @@ package com.company.agent.etatmental;
 import com.company.utils.Action;
 import com.company.utils.Node;
 import com.company.utils.Position;
-import com.company.utils.AStarPathFinder;
+import com.company.agent.exploration.AStarPathFinder;
 
 import java.util.ArrayList;
 import java.util.List;
