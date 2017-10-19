@@ -54,11 +54,11 @@ public class Environement extends Thread {
     }
 
     private Boolean shouldThereBeANewDirtySpace() {
-        return new Random().nextDouble() < 0.01;
+        return new Random().nextDouble() < 0.65;
     }
 
     private Boolean shouldThereBeANewLostJewel() {
-        return new Random().nextDouble() < 0.9;
+        return new Random().nextDouble() < 0.1;
     }
 
     private void generateDirt() {

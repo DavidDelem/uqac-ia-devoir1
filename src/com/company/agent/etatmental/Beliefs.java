@@ -39,7 +39,7 @@ public class Beliefs {
         return positionsJewelsList;
     }
 
-    public void setpositionsJewelsListList(List<Position> positionsJewelsList) {
+    public void setpositionsJewelsList(List<Position> positionsJewelsList) {
         this.positionsJewelsList = positionsJewelsList;
     }
 }

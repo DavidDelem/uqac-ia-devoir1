@@ -46,6 +46,10 @@ public class Effecteurs {
                 collectJewels(position);
                 System.out.println("Je ranasse");
                 break;
+            case NETTOYERETRAMASSER:
+                cleanDirtAndCollectJewels(position);
+                System.out.println("Je nettoie et je ranasse");
+                break;
             default:
                 break;
         }
@@ -71,6 +75,19 @@ public class Effecteurs {
         if(manoir[position.getI()][position.getJ()].getJewel()) {
             manoir[position.getI()][position.getJ()].setJewel(false);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(20));
+        }
+    }
+
+        /* Récupération des bijoux et nettoyage de la poussière  */
+
+    public void cleanDirtAndCollectJewels(Position position) {
+        if(manoir[position.getI()][position.getJ()].getDirt()) {
+            manoir[position.getI()][position.getJ()].setDirt(false);
+            updateNbPointsQueue.add(new UpdateNbPointsEvent(10));
+        }
+        if(manoir[position.getI()][position.getJ()].getJewel()) {
+            manoir[position.getI()][position.getJ()].setJewel(false);
+            updateNbPointsQueue.add(new UpdateNbPointsEvent(+20));
         }
     }
 

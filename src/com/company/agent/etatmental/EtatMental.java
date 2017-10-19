@@ -19,7 +19,7 @@ public class EtatMental {
 
     public void updateMyBeliefs(List<Position> positionsDirt, List<Position> positionJewels) {
         this.beliefs.setpositionsDirtsList(positionsDirt);
-        this.beliefs.setpositionsJewelsListList(positionJewels);
+        this.beliefs.setpositionsJewelsList(positionJewels);
     }
 
     /* Mise à jours des intentions à partir des croyances et des désirs */

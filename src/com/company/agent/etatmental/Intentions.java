@@ -23,18 +23,28 @@ public class Intentions {
     public void findPaths(Position position, List<Position> dirtsList, List<Position> jewelsList) {
 
         actionsList.clear();
-        List<Position> positionsList = dirtsList;
-        positionsList.addAll(jewelsList);
+//        List<Position> positionsList = dirtsList;
+//        positionsList.addAll(jewelsList);
 
         int bestManhattanDistance = 1000;
         Position targetPos = new Position(0,0);
-        for (Position positionElem : positionsList) {
+
+        for (Position positionElem : dirtsList) {
             int newManhattanDistance = aStarPathFinder.manhattanDistance(position.getJ(), position.getI(), positionElem.getJ(), positionElem.getI());
             if(newManhattanDistance < bestManhattanDistance) {
                 bestManhattanDistance = newManhattanDistance;
                 targetPos = positionElem;
             }
         }
+
+        for (Position positionElem : jewelsList) {
+            int newManhattanDistance = aStarPathFinder.manhattanDistance(position.getJ(), position.getI(), positionElem.getJ(), positionElem.getI());
+            if(newManhattanDistance < bestManhattanDistance) {
+                bestManhattanDistance = newManhattanDistance;
+                targetPos = positionElem;
+            }
+        }
+
         this.path = aStarPathFinder.AStarPathFinder(position,targetPos);
         this.defineActions(dirtsList,jewelsList);
     }
