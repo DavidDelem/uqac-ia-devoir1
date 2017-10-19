@@ -14,14 +14,13 @@ public class Main {
     public static void main(String[] args) {
 
         SharedDatas sharedDatas = new SharedDatas();
-        ConcurrentLinkedQueue<UpdateInterfaceEvent> queue = new ConcurrentLinkedQueue<>();
 
         /* Thread de l'environement */
-        Environement environement = new Environement(sharedDatas.manoir, queue);
+        Environement environement = new Environement(sharedDatas);
         /* Thread de l'agent */
-        Agent agent = new Agent(sharedDatas.manoir, queue);
+        Agent agent = new Agent(sharedDatas);
         /* Thread de l'interface graphique */
-        InterfaceGraphique interfaceGraphique = new InterfaceGraphique(sharedDatas.manoir, queue);
+        InterfaceGraphique interfaceGraphique = new InterfaceGraphique(sharedDatas);
 
         /* Lancement des threads */
         environement.start();

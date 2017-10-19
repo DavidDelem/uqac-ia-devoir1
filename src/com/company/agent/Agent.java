@@ -1,10 +1,7 @@
 package com.company.agent;
 
 import com.company.agent.etatmental.EtatMental;
-import com.company.environement.Piece;
-import com.company.utils.Action;
-import com.company.utils.Position;
-import com.company.utils.UpdateInterfaceEvent;
+import com.company.utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,24 +10,23 @@ import java.util.concurrent.TimeUnit;
 
 public class Agent extends Thread {
 
-    private Piece[][] manoir;
-    private ConcurrentLinkedQueue<UpdateInterfaceEvent> queue;
+    private ConcurrentLinkedQueue<UpdateInterfaceEvent> updateInterfaceQueue;
+    private ConcurrentLinkedQueue<UpdateNbPointsEvent> updateNbPointsQueue;
 
     private EtatMental etatMental;
     private Capteurs capteurs;
     private Effecteurs effecteurs;
-
     private Position position;
     private int nbPoints;
 
-    public Agent(Piece[][] manoir, ConcurrentLinkedQueue<UpdateInterfaceEvent> queue) {
-        this.manoir = manoir;
-        this.queue = queue;
+    public Agent(SharedDatas sharedDatas) {
+        this.updateInterfaceQueue = sharedDatas.updateInterfaceQueue;
+        this.updateNbPointsQueue = sharedDatas.updateNbPointsQueue;
         this.position = new Position(0,0);
 
         etatMental = new EtatMental();
-        capteurs = new Capteurs(manoir);
-        effecteurs = new Effecteurs(manoir);
+        capteurs = new Capteurs(sharedDatas);
+        effecteurs = new Effecteurs(sharedDatas);
     }
 
     public void run() {
@@ -66,7 +62,6 @@ public class Agent extends Thread {
     }
 
     private void chooseAnAction() {
-
         // INTENTION déterminée par l'état mental BDI à partir des BELIEFS et des DESIRES
     }
 
@@ -76,6 +71,8 @@ public class Agent extends Thread {
 
         // Liste d'actions a générer suite au résultat de l'exploration informée ou non informée
         // Test
+
+        UpdateNbPointsEvent updateNbPointsEvent;
         List<Action> actionList = new ArrayList<Action>();
         actionList.add(Action.BAS);
         actionList.add(Action.DROITE);
@@ -91,36 +88,15 @@ public class Agent extends Thread {
                 e.printStackTrace();
             }
 
-            this.nbPoints--;
+            position = effecteurs.doAnAction(action, position);
+            updateInterfaceQueue.add(new UpdateInterfaceEvent(position, null, "updatePositionRobot"));
+            updateInterfaceQueue.add(new UpdateInterfaceEvent(position, null,"updateContenuPiece"));
 
-            switch (action) {
-                case BAS:
-                    position = effecteurs.deplacementBas(position);
-                    queue.add(new UpdateInterfaceEvent(position, "updatePositionRobot"));
-                    break;
-                case HAUT:
-                    position = effecteurs.deplacementHaut(position);
-                    queue.add(new UpdateInterfaceEvent(position, "updatePositionRobot"));
-                    break;
-                case DROITE:
-                    position = effecteurs.deplacementDroite(position);
-                    queue.add(new UpdateInterfaceEvent(position, "updatePositionRobot"));
-                    break;
-                case GAUCHE:
-                    position = effecteurs.deplacementGauche(position);
-                    queue.add(new UpdateInterfaceEvent(position, "updatePositionRobot"));
-                    break;
-                case NETTOYER:
-                    effecteurs.cleanDirt(position);
-                    queue.add(new UpdateInterfaceEvent(position, "updateContenuPiece"));
-                    break;
-                case RAMASSER:
-                    effecteurs.collectJewels(position);
-                    queue.add(new UpdateInterfaceEvent(position, "updateContenuPiece"));
-                    break;
-                default:
-                    break;
+            if((updateNbPointsEvent = updateNbPointsQueue.poll()) != null) {
+                this.nbPoints += updateNbPointsEvent.getNbPoints();
             }
+
+            updateInterfaceQueue.add(new UpdateInterfaceEvent(null, String.valueOf(this.nbPoints), "updateAffichageNbPoints"));
         }
     }
 

@@ -6,11 +6,15 @@ public class Fenetre extends JFrame {
 
     private JLabel[][] imagesPieces;
     private JLabel imageRobot;
+    private JLabel nbPiecesPropresLabel;
+    private JLabel nbPoussieresLabel;
+    private JLabel nbJewelsLabel;
+    private JLabel nbPointsLabel;
 
     public Fenetre() {
         super();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(815, 845);
+        setSize(815, 905);
         getContentPane().setLayout(null);
         CreateElements();
         setVisible(true);
@@ -30,6 +34,22 @@ public class Fenetre extends JFrame {
                 getContentPane().add(imagesPieces[i][j]);
             }
         }
+
+        nbPiecesPropresLabel = new JLabel("Nombre de piéces propres : 100");
+        nbPiecesPropresLabel.setBounds(20,790,200,80);
+        getContentPane().add(nbPiecesPropresLabel);
+
+        nbPoussieresLabel = new JLabel("Nombre de poussières : 0");
+        nbPoussieresLabel.setBounds(230,790,200,80);
+        getContentPane().add(nbPoussieresLabel);
+
+        nbJewelsLabel = new JLabel("Nombre de bijoux : 0");
+        nbJewelsLabel.setBounds(420,790,200,80);
+        getContentPane().add(nbJewelsLabel);
+
+        nbPointsLabel = new JLabel("Nombre de points du robot : 0");
+        nbPointsLabel.setBounds(590,790,200,80);
+        getContentPane().add(nbPointsLabel);
     }
 
     public void updatePiece(int i, int j, Boolean hasDirt, Boolean hasJewel) {
@@ -65,6 +85,21 @@ public class Fenetre extends JFrame {
         revalidate();
         repaint();
 
+    }
+    public void updateNbPiecesPropresLabel(String texte) {
+        nbPiecesPropresLabel.setText("Nombre de pièces propres : " + texte);
+    }
+
+    public void updateNbPoussieresLabel(String texte) {
+        nbPoussieresLabel.setText("Nombre de poussières : " + texte);
+    }
+
+    public void updateNbJewelsLabel(String texte) {
+        nbJewelsLabel.setText("Nombre de bijoux : " + texte);
+    }
+
+    public void updateNbPoints(String texte) {
+        nbPointsLabel.setText("Nombre de points du robot : " + texte);
     }
 
 }

@@ -2,6 +2,7 @@ package com.company.agent;
 
 import com.company.environement.Piece;
 import com.company.utils.Position;
+import com.company.utils.SharedDatas;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,8 @@ public class Capteurs {
     private List<Position> positionsDirtsList;
     private List<Position> positionsJewelsList;
 
-    public Capteurs(Piece[][] manoir) {
-        this.manoir = manoir;
+    public Capteurs(SharedDatas sharedDatas) {
+        this.manoir = sharedDatas.manoir;
         this.positionsDirtsList = new ArrayList<>();
         this.positionsJewelsList = new ArrayList<>();
     }

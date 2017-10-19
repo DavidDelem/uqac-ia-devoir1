@@ -3,10 +3,12 @@ package com.company.utils;
 public class UpdateInterfaceEvent {
 
     Position position;
+    String informations;
     String typeEvent;
 
-    public UpdateInterfaceEvent(Position position, String typeEvent) {
+    public UpdateInterfaceEvent(Position position, String informations, String typeEvent) {
         this.position = position;
+        this.informations = informations;
         this.typeEvent = typeEvent;
     }
 
@@ -24,5 +26,13 @@ public class UpdateInterfaceEvent {
 
     public void setTypeEvent(String typeEvent) {
         this.typeEvent = typeEvent;
+    }
+
+    public String getInformations() {
+        return informations;
+    }
+
+    public void setInformations(String informations) {
+        this.informations = informations;
     }
 }
