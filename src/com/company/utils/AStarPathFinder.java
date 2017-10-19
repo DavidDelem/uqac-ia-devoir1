@@ -1,38 +1,47 @@
 package com.company.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.Math.abs;
 
 public class AStarPathFinder {
 
-    Node start;
-    Position target;
-    ArrayList<Position> path;
+    List<Position> path;
     Map<Position, Node> openList;
     Map<Position, Node> closedList;
 
-    public ArrayList<Position> AStarPathFinder (Position startPos, Position targetPos) {
-        target = targetPos;
-        //start.parent.setI(0);
-        //start.parent.setJ(0);
+    public List<Position> AStarPathFinder(Position startPos, Position targetPos) {
+        openList = new HashMap<>();
+        closedList = new HashMap<>();
+        path = new ArrayList<>();
+
         Position current = new Position(startPos.getI(),startPos.getJ());
+
+        Node start = new Node();
+        Position startParent = new Position(0,0);
+        start.setgCost(0);
+        start.sethCost(manhattanDistance(targetPos.getI(),targetPos.getJ(),startPos.getI(),startPos.getJ()));
+        start.setfCost(start.getgCost()+start.gethCost());
+        start.setParent(startParent);
+
 
         openList.put(current,start);
         addToClosedList(current);
-        addAdjacentNode(current);
+        addAdjacentNode(current,targetPos);
 
-        while(!((current.getI() == target.getI()) && (current.getJ() == target.getJ())) && (!openList.isEmpty())) {
+        while(!((current.getI() == targetPos.getI()) && (current.getJ() == targetPos.getJ())) && (!openList.isEmpty())) {
             // on cherche le meilleur noeud de la liste ouverte, on sait qu'elle n'est pas vide donc il existe
             current = bestNode(openList);
 
             addToClosedList(current);
-            addAdjacentNode(current);
+            addAdjacentNode(current,targetPos);
         }
 
-        if ((current.getI() == target.getI()) && (current.getJ() == target.getJ())){
-            findPath();
+        if ((current.getI() == targetPos.getI()) && (current.getJ() == targetPos.getJ())){
+            findPath(start,targetPos);
         }else{
             /* pas de solution */
         }
@@ -40,20 +49,22 @@ public class AStarPathFinder {
     }
 
     private void addToClosedList(Position pos){
-        Node node = openList.get(pos);
-        closedList.get(pos).gCost=node.gCost;
-        closedList.get(pos).hCost=node.hCost;
-        closedList.get(pos).fCost=node.fCost;
-        closedList.get(pos).parent=node.parent;
-
-        openList.remove(pos);
+        for(Map.Entry<Position, Node> entry : openList.entrySet()) {
+            Position key = entry.getKey();
+            Node value = entry.getValue();
+            if (key.getI()==pos.getI() && key.getJ()==pos.getJ()) {
+                closedList.put(pos,value);
+                openList.remove(pos);
+                break;
+            }
+        }
     }
 
-    private void addAdjacentNode(Position current) {
+    private void addAdjacentNode(Position current, Position targetPos) {
         Node tmp = new Node();
         for (int j=current.getJ()-1;j<=current.getJ()+1;j++) {
             if (j<0 || j>10) { continue; } // Outside map = forget
-            for (int i=current.getI()-1;i<=current.getI()+1;j++) {
+            for (int i=current.getI()-1;i<=current.getI()+1;i++) {
                 if (i<0 || i>10) { continue; } // Outside map = forget
                 if (j==current.getJ() && i==current.getI()) { continue; } // Current node = forget
                 // Diagonal cases = forget
@@ -64,25 +75,25 @@ public class AStarPathFinder {
 
                 Position adjacentPos = new Position(i,j);
                 if (!alreadyInList(adjacentPos,closedList)) {
-                    tmp.gCost = closedList.get(current).gCost + manhattanDistance(j,i,current.getJ(),current.getI());
-                    tmp.hCost = manhattanDistance(j,i,target.getJ(),target.getI());
-                    tmp.fCost = tmp.gCost + tmp.hCost;
-                    tmp.parent = current;
+                    tmp.setgCost(closedList.get(current).getgCost() + manhattanDistance(current.getJ(),current.getJ(),j,i));
+                    tmp.sethCost(manhattanDistance(j,i,targetPos.getJ(),targetPos.getI()));
+                    tmp.setfCost(tmp.getgCost()+tmp.gethCost());
+                    tmp.setParent(current);
 
                     if (alreadyInList(adjacentPos, openList)){
                         /* already in open list, compare costs */
-                        if (tmp.fCost < openList.get(adjacentPos).fCost){
-                            openList.get(adjacentPos).gCost=tmp.gCost;
-                            openList.get(adjacentPos).hCost=tmp.hCost;
-                            openList.get(adjacentPos).fCost=tmp.fCost;
-                            openList.get(adjacentPos).parent=tmp.parent;
+                        for(Map.Entry<Position, Node> entry : openList.entrySet()) {
+                            Position key = entry.getKey();
+                            Node value = entry.getValue();
+                            if (tmp.getfCost() < value.getfCost()){
+                                openList.put(adjacentPos,tmp);
+                                break;
+                            }
                         }
+
                     } else {
                         /* not in open list, add to it */
-                        openList.get(adjacentPos).gCost=tmp.gCost;
-                        openList.get(adjacentPos).hCost=tmp.hCost;
-                        openList.get(adjacentPos).fCost=tmp.fCost;
-                        openList.get(adjacentPos).parent=tmp.parent;
+                        openList.put(adjacentPos,tmp);
                     }
                 }
             }
@@ -96,23 +107,24 @@ public class AStarPathFinder {
 
     // Test if node is already in a list
     private boolean alreadyInList(Position pos, Map<Position, Node> list){
-        boolean found = false;
         for(Map.Entry<Position, Node> entry : list.entrySet()) {
             Position key = entry.getKey();
-            if (key == pos) { found = true; }
+            if (key.getI()==pos.getI() && key.getJ()==pos.getJ()) {
+                return true;
+            }
         }
-        return found;
+        return false;
     }
 
     private Position bestNode(Map<Position, Node> list){
-        int bestFCost = list.get(list.keySet().toArray()[0]).fCost;
+        int bestFCost = list.get(list.keySet().toArray()[0]).getfCost();
         Position bestNode = new Position(list.keySet().iterator().next().getI(),list.keySet().iterator().next().getJ());
 
         for(Map.Entry<Position, Node> entry : list.entrySet()) {
             Position key = entry.getKey();
             Node value = entry.getValue();
-            if (value.fCost < bestFCost) {
-                bestFCost = value.fCost;
+            if (value.getfCost() < bestFCost) {
+                bestFCost = value.getfCost();
                 bestNode = key;
             }
         }
@@ -120,22 +132,22 @@ public class AStarPathFinder {
         return bestNode;
     }
 
-    private void findPath() {
+    private void findPath(Node start, Position targetPos) {
         /* l'arrivée est le dernier élément de la liste fermée */
-        Node tmp = closedList.get(target);
+        Node tmp = closedList.get(targetPos);
 
-        Position n = new Position(target.getI(),target.getJ());
-        Position prec = new Position(tmp.parent.getI(),tmp.parent.getJ());
+        Position n = new Position(targetPos.getI(),targetPos.getJ());
+        Position prec = new Position(tmp.getParent().getI(),tmp.getParent().getJ());
         path.add(n);
 
-        while (prec != new Position(start.parent.getI(),start.parent.getJ())){
+        while (prec != new Position(start.getParent().getI(),start.getParent().getJ())){
             n.setI(prec.getI());
             n.setJ(prec.getJ());
             path.add(n);
 
-            tmp = closedList.get(tmp.parent);
-            prec.setI(tmp.parent.getI());
-            prec.setJ(tmp.parent.getJ());
+            tmp = closedList.get(tmp.getParent());
+            prec.setI(tmp.getParent().getI());
+            prec.setJ(tmp.getParent().getJ());
         }
     }
 }

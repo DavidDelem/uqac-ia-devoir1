@@ -41,7 +41,11 @@ public class Agent extends Thread {
         while(amIAlive()){
             observeEnvironmentWithAllMySensors();
             updateMyState();
-            chooseAnAction();
+            if (etatMental.getBeliefs().getpositionsDirtsList() != null) {
+                if (!etatMental.getBeliefs().getpositionsDirtsList().isEmpty()) {
+                    chooseAnAction();
+                }
+            }
             justDoIt(); // effecteur
         }
     }
@@ -63,6 +67,7 @@ public class Agent extends Thread {
 
     private void chooseAnAction() {
         // INTENTION déterminée par l'état mental BDI à partir des BELIEFS et des DESIRES
+        List<Position> path = etatMental.updateMyIntentions(this.position);
     }
 
     private void justDoIt() {
@@ -74,11 +79,6 @@ public class Agent extends Thread {
 
         UpdateNbPointsEvent updateNbPointsEvent;
         List<Action> actionList = new ArrayList<Action>();
-        actionList.add(Action.BAS);
-        actionList.add(Action.DROITE);
-        actionList.add(Action.DROITE);
-        actionList.add(Action.BAS);
-        actionList.add(Action.NETTOYER);
 
         for(Action action: actionList) {
 

@@ -12,6 +12,7 @@ public class EtatMental {
 
     public EtatMental() {
         this.beliefs = new Beliefs();
+        this.intentions = new Intentions();
     }
 
     public void updateMyBeliefs(List<Position> positionsDirt, List<Position> positionJewels) {
@@ -19,5 +20,16 @@ public class EtatMental {
         this.beliefs.setpositionsJewelsListList(positionJewels);
     }
 
+    public List<Position> updateMyIntentions(Position position) {
+        List<Position> path = this.intentions.findPaths(position, beliefs.getpositionsDirtsList());
+        return path;
+    }
 
+    public Beliefs getBeliefs() {
+        return beliefs;
+    }
+
+    public void setBeliefs(Beliefs beliefs) {
+        this.beliefs = beliefs;
+    }
 }
