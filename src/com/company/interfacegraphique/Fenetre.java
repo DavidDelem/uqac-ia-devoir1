@@ -2,6 +2,10 @@ package com.company.interfacegraphique;
 
 import javax.swing.*;
 
+/**
+ Affichage des éléments à l'écran
+ */
+
 public class Fenetre extends JFrame {
 
     private JLabel[][] imagesPieces;

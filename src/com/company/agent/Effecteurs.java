@@ -5,17 +5,21 @@ import com.company.utils.*;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ Effecteurs de l'agent aspirateur
+ */
+
 public class Effecteurs {
 
     private Piece[][] manoir;
     private ConcurrentLinkedQueue<UpdateNbPointsEvent> updateNbPointsQueue;
-    private ConcurrentLinkedQueue<UpdateInterfaceEvent> updateInterfaceQueue;
 
     public Effecteurs(SharedDatas sharedDatas) {
         this.manoir = sharedDatas.manoir;
         this.updateNbPointsQueue = sharedDatas.updateNbPointsQueue;
-        this.updateInterfaceQueue = sharedDatas.updateInterfaceQueue;
     }
+
+    /* Réalisation de l'action demandée */
 
     public Position doAnAction(Action action, Position position) {
         switch (action) {
@@ -43,6 +47,8 @@ public class Effecteurs {
         return position;
     }
 
+    /* Nettoyage de la poussière  */
+
     public void cleanDirt(Position position) {
         if(manoir[position.getI()][position.getJ()].getDirt()) {
             manoir[position.getI()][position.getJ()].setDirt(false);
@@ -54,12 +60,16 @@ public class Effecteurs {
         }
     }
 
+    /* Récupération des bijoux  */
+
     public void collectJewels(Position position) {
         if(manoir[position.getI()][position.getJ()].getJewel()) {
             manoir[position.getI()][position.getJ()].setJewel(false);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(20));
         }
     }
+
+    /* Déplacement du robot vers la gauche  */
 
     public Position deplacementGauche(Position position) {
         Position newPosition = position;
@@ -70,6 +80,8 @@ public class Effecteurs {
         return newPosition;
     }
 
+    /* Déplacement du robot vers la droite  */
+
     public Position deplacementDroite(Position position) {
         Position newPosition = position;
         if (position.getI()+1 < 10) {
@@ -79,6 +91,8 @@ public class Effecteurs {
         return newPosition;
     }
 
+    /* Déplacement du robot vers le haut */
+
     public Position deplacementHaut(Position position) {
         Position newPosition = position;
         if (position.getJ()-1 >= 0) {
@@ -87,6 +101,8 @@ public class Effecteurs {
         }
         return newPosition;
     }
+
+    /* Déplacement du robot vers le bas  */
 
     public Position deplacementBas(Position position) {
         Position newPosition = position;

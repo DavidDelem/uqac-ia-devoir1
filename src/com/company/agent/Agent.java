@@ -54,48 +54,49 @@ public class Agent extends Thread {
         return true;
     }
 
+    /* Observation de l'environement grâce aux capteurs */
+
     private void observeEnvironmentWithAllMySensors() {
-        // Utilisation des CAPTEURS
         capteurs.detectDirts();
         capteurs.detectJewels();
     }
 
+    /* Mise à jours des croyances de l'agent */
+
     private void updateMyState() {
-        // Mise à jours des BELIEFS de l'état mental BDI
         etatMental.updateMyBeliefs(capteurs.getPositionsDirtsList(), capteurs.getPositionsJewelsList());
     }
 
+    /* Choix de l'action: intentions déterminée par l'état mental BDI à partir des croyances et des désirs */
+
     private void chooseAnAction() {
-        // INTENTION déterminée par l'état mental BDI à partir des BELIEFS et des DESIRES
-        List<Position> path = etatMental.updateMyIntentions(this.position);
+        etatMental.updateMyIntentions(this.position);
     }
 
-    private void justDoIt() {
-        // Utilisation des EFFECTEURS
-        // On boucle sur la liste d'actions (haut bas droite gauche ramasser nettoyer) renvoyée par l'algo d'exploration
+    /* Réalisation de l'action via les effecteurs */
 
-        // Liste d'actions a générer suite au résultat de l'exploration informée ou non informée
-        // Test
+    private void justDoIt() {
+
+        int n = 5;
 
         UpdateNbPointsEvent updateNbPointsEvent;
-        List<Action> actionList = new ArrayList<Action>();
+        List<Action> actionList = etatMental.getIntentions().getActionsList();
 
+        /* Réalisation des actions */
         for(Action action: actionList) {
-
             try {
                 TimeUnit.MILLISECONDS.sleep(150);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
             position = effecteurs.doAnAction(action, position);
-            updateInterfaceQueue.add(new UpdateInterfaceEvent(position, null, "updatePositionRobot"));
-            updateInterfaceQueue.add(new UpdateInterfaceEvent(position, null,"updateContenuPiece"));
 
             if((updateNbPointsEvent = updateNbPointsQueue.poll()) != null) {
                 this.nbPoints += updateNbPointsEvent.getNbPoints();
             }
 
+            updateInterfaceQueue.add(new UpdateInterfaceEvent(position, null, "updatePositionRobot"));
+            updateInterfaceQueue.add(new UpdateInterfaceEvent(position, null,"updateContenuPiece"));
             updateInterfaceQueue.add(new UpdateInterfaceEvent(null, String.valueOf(this.nbPoints), "updateAffichageNbPoints"));
         }
     }

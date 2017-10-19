@@ -5,6 +5,10 @@ import com.company.utils.Position;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ Croyances de l'agent
+ */
+
 public class Beliefs {
 
     private List<Position> positionsDirtsList;

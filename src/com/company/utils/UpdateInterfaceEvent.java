@@ -1,5 +1,9 @@
 package com.company.utils;
 
+/**
+ Evenement de mise à jours de l'interface
+ */
+
 public class UpdateInterfaceEvent {
 
     Position position;

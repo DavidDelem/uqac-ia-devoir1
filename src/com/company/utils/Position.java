@@ -1,5 +1,9 @@
 package com.company.utils;
 
+/**
+ Définit une position à partir de coordonnées i et j
+ */
+
 public class Position {
 
     private int i;

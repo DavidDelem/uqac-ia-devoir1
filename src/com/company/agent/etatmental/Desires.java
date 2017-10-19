@@ -1,23 +1,30 @@
 package com.company.agent.etatmental;
 
 import com.company.environement.Piece;
+import com.company.utils.Position;
+
+import java.util.List;
+
+/**
+ Désirs de l'agent aspirateur
+ */
 
 public class Desires {
 
-    // Je veux que le manoir soit totalement propre et sans bijoux
+    public Desires() {
 
-    public Boolean iWantATotallyCleanMansion(Piece[][] manoir) {
+    }
 
-        Boolean mansionIsClean = true;
+    /* Désir: Je veux que le manoir soit totalement propre et sans bijoux */
 
-        for(int i=0; i<10; i++) {
-            for(int j=0; j<10; j++) {
-                if(manoir[i][j].getDirt() || manoir[i][j].getJewel()) {
-                   mansionIsClean = false;
-                   break;
-                }
-            }
+    public Boolean iWantATotallyCleanMansion(List<Position> positionsDirtsList, List<Position> positionsJewelsList) {
+
+        Boolean mansionIsClean = false;
+
+        if(positionsDirtsList.isEmpty() && positionsJewelsList.isEmpty()) {
+            mansionIsClean = true;
         }
+
         return mansionIsClean;
     }
 

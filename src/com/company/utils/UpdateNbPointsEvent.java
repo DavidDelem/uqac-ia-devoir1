@@ -1,5 +1,9 @@
 package com.company.utils;
 
+/**
+ Evenement de mise à jours du nombre de points du robot
+ */
+
 public class UpdateNbPointsEvent {
 
     int nbPoints;

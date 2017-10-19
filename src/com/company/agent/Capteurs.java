@@ -7,6 +7,10 @@ import com.company.utils.SharedDatas;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ Capteurs de l'agent aspirateur
+ */
+
 public class Capteurs {
 
     private Piece[][] manoir;
@@ -19,11 +23,12 @@ public class Capteurs {
         this.positionsJewelsList = new ArrayList<>();
     }
 
+    /* Détection des poussières */
+
     public void detectDirts() {
-        /* Suppression des anciennes positions des poussières */
         this.positionsDirtsList.clear();
 
-        /* Ajout des nouvelles positions des poussières */
+        /* Détection des nouvelles positions des poussières */
         for (int i=0; i<10; i++) {
             for(int j=0; j<10; j++) {
                 if(manoir[i][j] != null && manoir[i][j].getDirt()) {
@@ -33,11 +38,11 @@ public class Capteurs {
         }
     }
 
-    public void detectJewels() {
-        /* Suppression des anciennes positions des bijoux */
-        this.positionsJewelsList.clear();
+    /* Détection des bijoux */
 
-        /* Ajout des nouvelles positions des bijoux */
+    public void detectJewels() {
+        this.positionsJewelsList.clear();
+        /* Détection des nouvelles positions des bijoux */
         for (int i=0; i<10; i++) {
             for(int j=0; j<10; j++) {
                 if(manoir[i][j] != null && manoir[i][j].getJewel()) {
