@@ -73,8 +73,8 @@ public class Effecteurs {
 
     public Position deplacementGauche(Position position) {
         Position newPosition = position;
-        if (position.getI()-1 >= 0) {
-            newPosition.setI(position.getI()-1);
+        if (position.getJ()-1 >= 0) {
+            newPosition.setI(position.getJ()-1);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(-1));
         }
         return newPosition;
@@ -84,8 +84,8 @@ public class Effecteurs {
 
     public Position deplacementDroite(Position position) {
         Position newPosition = position;
-        if (position.getI()+1 < 10) {
-            newPosition.setI(position.getI()+1);
+        if (position.getJ()+1 < 10) {
+            newPosition.setI(position.getJ()+1);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(-1));
         }
         return newPosition;
@@ -95,8 +95,8 @@ public class Effecteurs {
 
     public Position deplacementHaut(Position position) {
         Position newPosition = position;
-        if (position.getJ()-1 >= 0) {
-            newPosition.setJ(position.getJ()-1);
+        if (position.getI()-1 >= 0) {
+            newPosition.setJ(position.getI()-1);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(-1));
         }
         return newPosition;
@@ -106,8 +106,8 @@ public class Effecteurs {
 
     public Position deplacementBas(Position position) {
         Position newPosition = position;
-        if (position.getJ()+1 < 10) {
-            newPosition.setJ(position.getJ()+1);
+        if (position.getI()+1 < 10) {
+            newPosition.setJ(position.getI()+1);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(-1));
         }
         return newPosition;

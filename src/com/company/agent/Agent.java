@@ -85,7 +85,7 @@ public class Agent extends Thread {
         /* Réalisation des actions */
         for(Action action: actionList) {
             try {
-                TimeUnit.MILLISECONDS.sleep(150);
+                TimeUnit.MILLISECONDS.sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
