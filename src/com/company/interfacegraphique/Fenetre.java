@@ -27,13 +27,13 @@ public class Fenetre extends JFrame {
     private void CreateElements() {
         imagesPieces = new JLabel[10][10];
 
-        imageRobot = new JLabel(new ImageIcon( "robot.png"));
+        imageRobot = new JLabel(new ImageIcon( "src/ressources/robot.png"));
         imageRobot.setBounds(0,0,80,80);
         getContentPane().add(imageRobot);
 
         for(int i=0; i<10; i++) {
             for(int j=0; j<10; j++) {
-                imagesPieces[i][j] = new JLabel( new ImageIcon( "piece.png"));
+                imagesPieces[i][j] = new JLabel( new ImageIcon( "src/ressources/piece.png"));
                 imagesPieces[i][j].setBounds(80*i,80*j,80,80);
                 getContentPane().add(imagesPieces[i][j]);
             }
@@ -61,13 +61,13 @@ public class Fenetre extends JFrame {
         getContentPane().remove(imagesPieces[i][j]);
 
         if(hasDirt && !hasJewel) {
-            imagesPieces[i][j] = new JLabel( new ImageIcon( "piece-dirt.png"));
+            imagesPieces[i][j] = new JLabel( new ImageIcon( "src/ressources/piece-dirt.png"));
         } else if(hasJewel && !hasDirt) {
-            imagesPieces[i][j] = new JLabel( new ImageIcon( "piece-jewel.png"));
+            imagesPieces[i][j] = new JLabel( new ImageIcon( "src/ressources/piece-jewel.png"));
         } else if(hasDirt && hasJewel) {
-            imagesPieces[i][j] = new JLabel( new ImageIcon( "piece-jeweldirt.png"));
+            imagesPieces[i][j] = new JLabel( new ImageIcon( "src/ressources/piece-jeweldirt.png"));
         } else {
-            imagesPieces[i][j] = new JLabel( new ImageIcon( "piece.png"));
+            imagesPieces[i][j] = new JLabel( new ImageIcon( "src/ressources/piece.png"));
         }
         imagesPieces[i][j].setBounds(80*i,80*j,80,80);
         getContentPane().add(imagesPieces[i][j]);
