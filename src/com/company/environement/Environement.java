@@ -58,7 +58,7 @@ public class Environement extends Thread {
     }
 
     private Boolean shouldThereBeANewLostJewel() {
-        return new Random().nextDouble() < 0.1;
+        return new Random().nextDouble() < 0.20;
     }
 
     private void generateDirt() {
@@ -107,7 +107,6 @@ public class Environement extends Thread {
                 }
             }
         }
-        System.out.println(this.nbPiecesPropres);
         updateInterfaceQueue.add(new UpdateInterfaceEvent(null, String.valueOf(nbPiecesPropres),"updateAffichageMesurePerf1"));
         updateInterfaceQueue.add(new UpdateInterfaceEvent(null, String.valueOf(nbPoussieres),"updateAffichageMesurePerf2"));
         updateInterfaceQueue.add(new UpdateInterfaceEvent(null, String.valueOf(nbJewels),"updateAffichageMesurePerf3"));

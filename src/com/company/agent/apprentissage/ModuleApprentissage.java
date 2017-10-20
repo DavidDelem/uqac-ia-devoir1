@@ -14,27 +14,31 @@ public class ModuleApprentissage {
     Map<FrequencesExploration, Integer> performancesMap;
 
     public ModuleApprentissage() {
-        this.nbIterationsMax = 5;
+        this.nbIterationsMax = 10;
         this.nbIterationsTotales = 0;
         this.frequenceExplorationCourante = FrequencesExploration.TOTALE;
         this.performancesMap = new HashMap<>();
 
-        performancesMap.put(FrequencesExploration.TOTALE, 0);
-        performancesMap.put(FrequencesExploration.TROISQUART, 0);
-        performancesMap.put(FrequencesExploration.MOITIE, 0);
-        performancesMap.put(FrequencesExploration.UNQUART, 0);
+        performancesMap.put(FrequencesExploration.TOTALE, null);
+        performancesMap.put(FrequencesExploration.MOITIE, null);
+        performancesMap.put(FrequencesExploration.UNQUART, null);
     }
 
     public List<Action> decideWhereToStopActions(List<Action> actionsList) {
+
+        /* Si on est très proche, on y va dans tout les cas */
+        if(actionsList.size() < 4) {
+            return actionsList;
+        }
+
+        /* Sinon, on ne fait pas toutes les actions */
         switch (frequenceExplorationCourante) {
             case TOTALE:
                 return actionsList;
-            case TROISQUART:
-                return  actionsList.subList(0, (actionsList.size() / 4 + 1) * 3);
             case MOITIE:
-                return  actionsList.subList(0, actionsList.size() / 2 + 1);
+                return  actionsList.subList(0, (actionsList.size() + 1) / 2);
             case UNQUART:
-                return  actionsList.subList(0, actionsList.size() / 4 + 1);
+                return  actionsList.subList(0, (actionsList.size() + 1) / 4);
             default:
                 return actionsList;
         }
@@ -42,6 +46,22 @@ public class ModuleApprentissage {
 
     public void updatePerformance(FrequencesExploration frequencesExploration, int performance) {
         performancesMap.put(frequencesExploration, performance);
+    }
+
+    public void chooseBestFrequenceExploration() {
+
+        int bestFrequence = performancesMap.get(FrequencesExploration.TOTALE);
+
+        for (Map.Entry<FrequencesExploration, Integer> entry : performancesMap.entrySet()) {
+            if(entry.getValue() == null) {
+                frequenceExplorationCourante = entry.getKey();
+                break;
+            }
+            if(entry.getValue() >= bestFrequence) {
+                frequenceExplorationCourante = entry.getKey();
+            }
+        }
+
     }
 
     public void incrementeNbIterationTotales() {

@@ -1,6 +1,5 @@
 package com.company.agent;
 
-import com.company.agent.apprentissage.FrequencesExploration;
 import com.company.agent.apprentissage.ModuleApprentissage;
 import com.company.agent.etatmental.EtatMental;
 import com.company.utils.*;
@@ -36,29 +35,33 @@ public class Agent extends Thread {
     public void run() {
 
         while(amIAlive()){
+
+            // J'observe l'environement
             observeEnvironmentWithAllMySensors();
+            // Je met à jour mon état interne
             updateMyState();
 
+            // Je choisi une action et je l'execute
             if (etatMental.getBeliefs().getpositionsDirtsList() != null || etatMental.getBeliefs().getpositionsJewelsList() != null) {
                 if (!etatMental.getBeliefs().getpositionsDirtsList().isEmpty() || !etatMental.getBeliefs().getpositionsJewelsList().isEmpty()) {
                     chooseAnAction();
                     justDoIt();
+                    moduleApprentissage.incrementeNbIterationTotales();
                 }
             }
 
 
             /* Apprentissage */
 
-//            moduleApprentissage.incrementeNbIterationTotales();
-//
-//            if(moduleApprentissage.getNbIterationsMax() == moduleApprentissage.getnbIterationsTotales()) {
-//                /* Enregistrement du nombre de points obtenus avec cette fréquence d'exploration */
-//                moduleApprentissage.updatePerformance(moduleApprentissage.getFrequenceExplorationCourante(), nbPoints);
-//                /* Détermination de la nouvelle fréquence d'exploration à utiliser (possiblement la même) */
-//                moduleApprentissage.setFrequenceExploration(FrequencesExploration.MOITIE);
-//                /* Réinitialisation du nombre d'itérations */
-//                moduleApprentissage.setNbIterationsTotales(0);
-//            }
+            /* Au bout d'un certain nombre d'itérations, on va adapter la fréquence d'exploration */
+            if(moduleApprentissage.getNbIterationsMax() == moduleApprentissage.getnbIterationsTotales()) {
+                /* Enregistrement du nombre de points obtenus avec cette fréquence d'exploration */
+                moduleApprentissage.updatePerformance(moduleApprentissage.getFrequenceExplorationCourante(), nbPoints);
+                /* Détermination de la nouvelle fréquence d'exploration à utiliser (possiblement la même) */
+                moduleApprentissage.chooseBestFrequenceExploration();
+                /* Réinitialisation du nombre d'itérations */
+                moduleApprentissage.setNbIterationsTotales(0);
+            }
         }
     }
 
@@ -89,27 +92,32 @@ public class Agent extends Thread {
 
     private void justDoIt() {
 
-        FrequencesExploration frequencesExploration = moduleApprentissage.getFrequenceExplorationCourante();
-
         UpdateNbPointsEvent updateNbPointsEvent;
+
+        /* Récupération de la liste des actions */
         List<Action> actionList = etatMental.getIntentions().getActionsList();
+        /* Décision du nombre réel d'actions à effectuer avant la prochaine exploration */
         actionList = moduleApprentissage.decideWhereToStopActions(actionList);
 
-
         /* Réalisation des actions */
+
         for(Action action: actionList) {
+
             try {
-                TimeUnit.MILLISECONDS.sleep(150);
+                TimeUnit.MILLISECONDS.sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
+            /* Utilisation des effecteurs */
             position = effecteurs.doAnAction(action, position);
 
+            /* Mise à jours du nombre de points */
             if((updateNbPointsEvent = updateNbPointsQueue.poll()) != null) {
                 this.nbPoints += updateNbPointsEvent.getNbPoints();
             }
 
+            /* Envoi d'événements à l'interface graphique pour l'informer de changement */
             updateInterfaceQueue.add(new UpdateInterfaceEvent(position, null, "updatePositionRobot"));
             updateInterfaceQueue.add(new UpdateInterfaceEvent(position, null,"updateContenuPiece"));
             updateInterfaceQueue.add(new UpdateInterfaceEvent(null, String.valueOf(this.nbPoints), "updateAffichageNbPoints"));
