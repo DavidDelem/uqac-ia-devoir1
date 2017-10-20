@@ -8,6 +8,10 @@ import java.util.List;
 
 import static java.lang.Math.abs;
 
+/**
+ Exploration informée
+ */
+
 public class AStarPathFinder {
 
     private List<Node> openList;
@@ -40,11 +44,11 @@ public class AStarPathFinder {
 
     private void addAdjacentNode(Node current, Position startPos, Position targetPos) {
         for (int j=current.getPosition().getJ()-1;j<=current.getPosition().getJ()+1;j++) {
-            if (j<0 || j>9) { continue; } // Outside map = forget
+            if (j<0 || j>9) { continue; }
             for (int i=current.getPosition().getI()-1;i<=current.getPosition().getI()+1;i++) {
-                if (i<0 || i>9) { continue; } // Outside map = forget
-                if (j==current.getPosition().getJ() && i==current.getPosition().getI()) { continue; } // Current node = forget
-                // Diagonal cases = forget
+                if (i<0 || i>9) { continue; }
+                if (j==current.getPosition().getJ() && i==current.getPosition().getI()) { continue; }
+
                 if (j==current.getPosition().getJ()-1 && i==current.getPosition().getI()-1) { continue; }
                 if (j==current.getPosition().getJ()-1 && i==current.getPosition().getI()+1) { continue; }
                 if (j==current.getPosition().getJ()+1 && i==current.getPosition().getI()-1) { continue; }
@@ -60,12 +64,12 @@ public class AStarPathFinder {
                     tmp.setfCost(tmp.getgCost()+tmp.gethCost());
 
                     if (alreadyInList(tmp, openList)){
-                        /* already in open list, compare costs */
+                        /* déjà dans la liste ouverte, on compare les couts */
                         for (Node node : openList) {
                             if (tmp.getfCost()<node.getfCost()) openList.add(tmp);break;
                         }
                     } else {
-                        /* not in open list, add to it */
+                        /* pas dans la liste ouverte, on l'ajoute */
                         openList.add(tmp);
                     }
                 }
@@ -73,12 +77,12 @@ public class AStarPathFinder {
         }
     }
 
-    // Calculate distance between positions (x1,y1) and (x2,y2)
+    /* Calcul la distance entre deux positions */
     public int manhattanDistance(int x1, int y1, int x2, int y2){
         return abs(x2 - x1) + abs(y2 - y1);
     }
 
-    // Test if node is already in a list
+    /* Teste si un noeud est déjà dans la liste */
     private boolean alreadyInList(Node node, List<Node> list){
         for (Node index : list) {
             if (node.getPosition().getI()==index.getPosition().getI() && node.getPosition().getJ()==index.getPosition().getJ()) return true;

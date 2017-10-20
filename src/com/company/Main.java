@@ -9,6 +9,10 @@ import com.company.utils.UpdateInterfaceEvent;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ Programme principal
+ */
+
 public class Main {
 
     public static void main(String[] args) {

@@ -1,12 +1,11 @@
 package com.company.agent.etatmental;
 
-import com.company.environement.Piece;
 import com.company.utils.Position;
 
 import java.util.List;
 
 /**
- Désirs de l'agent aspirateur
+ Désirs de l'agent
  */
 
 public class Desires {

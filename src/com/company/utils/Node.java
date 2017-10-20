@@ -1,5 +1,9 @@
 package com.company.utils;
 
+/**
+ Noeud pour l'exploration
+ */
+
 public class Node {
     Position position; // Node position
     int gCost; // Cost from start position to considered node

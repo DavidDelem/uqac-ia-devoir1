@@ -3,6 +3,10 @@ package com.company.agent.etatmental;
 import com.company.utils.Position;
 import java.util.List;
 
+/**
+ Etat mental de l'agent
+ */
+
 public class EtatMental {
 
     private Beliefs beliefs;

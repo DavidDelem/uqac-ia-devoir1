@@ -8,6 +8,10 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
+/**
+ Environement
+ */
+
 public class Environement extends Thread {
 
     private Piece[][] manoir;

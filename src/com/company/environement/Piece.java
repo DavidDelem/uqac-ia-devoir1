@@ -1,5 +1,9 @@
 package com.company.environement;
 
+/**
+ Description d'une piéce
+ */
+
 public class Piece {
 
     private Boolean dirt;

@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
+/**
+ Classe principale de l'agent
+ */
+
 public class Agent extends Thread {
 
     private ConcurrentLinkedQueue<UpdateInterfaceEvent> updateInterfaceQueue;
