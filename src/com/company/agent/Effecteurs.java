@@ -59,8 +59,6 @@ public class Effecteurs {
     /* Nettoyage de la poussière  */
 
     public void cleanDirt(Position position) {
-        System.out.println(position.getI());
-
         if(manoir[position.getI()][position.getJ()].getDirt()) {
             manoir[position.getI()][position.getJ()].setDirt(false);
             updateNbPointsQueue.add(new UpdateNbPointsEvent(2));
